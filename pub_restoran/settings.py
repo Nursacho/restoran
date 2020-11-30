@@ -41,6 +41,7 @@ INSTALLED_APPS = [
 
     # apps
     'apps.departmants',
+    'apps.foods',
 ]
 
 MIDDLEWARE = [

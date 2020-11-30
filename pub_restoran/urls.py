@@ -8,6 +8,8 @@ from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 
+from .views import api_root
+
 schema_view = get_schema_view(
     openapi.Info(
         title="Pub Restoran",
@@ -21,9 +23,16 @@ schema_view = get_schema_view(
     permission_classes=(permissions.AllowAny,),
 )
 
+api_patterns = [
+    path('', api_root, name='api-root'),
+    path('foods/', include('apps.foods.urls')),
+    path('departments/', include('apps.departmants.urls')),
+]
+
 urlpatterns = [
     path('jet/', include('jet.urls', 'jet')),
     path('admin/', admin.site.urls),
+    path('api/', include(api_patterns)),
 
     # documentation
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
