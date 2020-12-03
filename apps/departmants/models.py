@@ -69,8 +69,33 @@ class Department(models.Model):
         blank=True, null=True,
     )
 
+    class Meta:
+        ordering = ('-id',)
+
     def __str__(self):
         return self.title
+
+
+class PhoneNumber(models.Model):
+    department = models.ForeignKey(
+        Department,
+        on_delete=models.SET_NULL,
+        blank=True, null=True,
+        related_name='phone_number',
+        verbose_name='Заведения'
+    )
+    number = models.CharField(
+        max_length=255,
+        verbose_name='Телефон',
+        validators=[phone_number_regex],
+        null=True, blank=True
+    )
+
+    class Meta:
+        ordering = ('-id',)
+
+    def __str__(self):
+        return f"{self.department} -- {self.number}"
 
 
 class Booking(models.Model):
@@ -90,6 +115,9 @@ class Booking(models.Model):
         verbose_name='Телефон',
         blank=True, null=True
     )
+
+    class Meta:
+        ordering = ('-id',)
 
     def __str__(self):
         return f"{self.department.title} book's {self.day}"
