@@ -16,6 +16,11 @@ class Department(models.Model):
         db_index=True,
         verbose_name='Название место'
     )
+    image = models.ImageField(
+        upload_to='department',
+        null=True, blank=True,
+        verbose_name='Изображение заведения'
+    )
     location = models.CharField(
         max_length=255,
         verbose_name='Место расположения'
@@ -43,11 +48,6 @@ class Department(models.Model):
     music = models.CharField(
         max_length=255,
         verbose_name="Музыка"
-    )
-    phone_of_department = models.CharField(
-        max_length=255,
-        verbose_name='Телефон',
-        blank=True, null=True
     )
     facebook_profile = models.URLField(
         max_length=255,

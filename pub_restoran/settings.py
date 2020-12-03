@@ -107,6 +107,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 CORS_ORIGIN_WHITELIST = [
     'http://localhost:3000',
+    "https://the-bishs-bar-demo.web.app",
 ]
 
 # Internationalization
