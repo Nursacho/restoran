@@ -1,3 +1,8 @@
 from django.contrib import admin
+from apps.departmants.models import (
+    Department,
+    Booking,
+)
 
-# Register your models here.
+admin.site.register(Department)
+admin.site.register(Booking)
