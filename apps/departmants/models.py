@@ -32,7 +32,41 @@ class Department(models.Model):
     )
     seats = models.PositiveIntegerField(
         verbose_name='Количество мест',
-        default=0
+        default=0,
+        blank=True,
+        null=True
+    )
+    parking = models.CharField(
+        max_length=255,
+        verbose_name='Парковка'
+    )
+    music = models.CharField(
+        max_length=255,
+        verbose_name="Музыка"
+    )
+    phone_of_department = models.CharField(
+        max_length=255,
+        verbose_name='Телефон',
+        blank=True, null=True
+    )
+    facebook_profile = models.URLField(
+        max_length=255,
+        blank=True, null=True,
+        verbose_name='Ссылка на Facebook'
+    )
+    insta_profile = models.URLField(
+        max_length=255,
+        blank=True, null=True,
+        verbose_name='Ссылка на Instagram'
+    )
+    web_profile = models.URLField(
+        max_length=255,
+        blank=True, null=True,
+        verbose_name='Ссылка на Website'
+    )
+    description = models.TextField(
+        verbose_name='Описание',
+        blank=True, null=True,
     )
 
     def __str__(self):

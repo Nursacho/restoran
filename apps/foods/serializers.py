@@ -6,7 +6,7 @@ class FoodCategorySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = FoodCategory
-        fields = ('id', 'title')
+        fields = ('id', 'main_title', 'title')
 
 
 class FoodListSerializer(serializers.ModelSerializer):

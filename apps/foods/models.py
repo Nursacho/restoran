@@ -2,6 +2,11 @@ from django.db import models
 
 
 class FoodCategory(models.Model):
+    main_title = models.CharField(
+        max_length=255,
+        db_index=True,
+        verbose_name='Название меню'
+    )
     title = models.CharField(
         max_length=255,
         db_index=True,
@@ -25,11 +30,6 @@ class Food(models.Model):
         blank=True,
         null=True,
         verbose_name='Категорий'
-    )
-    image = models.ImageField(
-        verbose_name='Изображение',
-        upload_to='foods',
-        blank=True, null=True
     )
     price = models.PositiveSmallIntegerField(verbose_name='Цена', default=0)
     description = models.TextField(verbose_name='Описание еды')
