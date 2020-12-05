@@ -9,6 +9,12 @@ phone_number_regex = RegexValidator(
     )
 )
 
+PARKING_CHOICE = (
+    ('F', 'Парковка неохраняемая, бесплатная'),
+    ('Pay', 'Парковка охраняемая, небесплатная'),
+    ('Not', 'Парковки нет'),
+)
+
 
 class Department(models.Model):
     title = models.CharField(
@@ -43,6 +49,7 @@ class Department(models.Model):
     )
     parking = models.CharField(
         max_length=255,
+        choices=PARKING_CHOICE,
         verbose_name='Парковка'
     )
     music = models.CharField(
