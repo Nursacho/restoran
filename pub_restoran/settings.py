@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'drf_yasg',
     'corsheaders',
+    'storages',
 
     # apps
     'apps.departmants',
@@ -126,11 +127,26 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
-STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR / 'staticfiles'
+USE_S3 = True
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+if USE_S3:
+    # aws settings
+    AWS_ACCESS_KEY_ID = 'AKIAVFCV4CEZKJZJ3NEO'
+    AWS_SECRET_ACCESS_KEY = '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'
+    AWS_STORAGE_BUCKET_NAME = 'imagsdj'
+    AWS_S3_REGION_NAME = 'ap-east-1'
+    AWS_DEFAULT_ACL = None
+    AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com'
+    AWS_S3_OBJECT_PARAMETERS = {'CacheControl': 'max-age=86400'}
+    # s3 public media settings
+    PUBLIC_MEDIA_LOCATION = 'media'
+    MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{PUBLIC_MEDIA_LOCATION}/'
+    DEFAULT_FILE_STORAGE = 'pub_restoran.storages.PublicMediaStorage'
+else:
+    STATIC_URL = '/static'
+    STATIC_ROOT = BASE_DIR / 'static'
+    MEDIA_URL = '/media/'
+    MEDIA_ROOT = BASE_DIR / 'media'
 
 JET_THEMES = [
     {
