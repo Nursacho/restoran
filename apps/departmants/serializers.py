@@ -30,6 +30,7 @@ class DepartmentListSerializer(serializers.ModelSerializer):
 
 class DepartmentSerializer(serializers.ModelSerializer):
     phone_number = PhoneNumberSerializer(many=True, required=False)
+    food = FoodCategorySerializer(many=True, read_only=True)
 
     class Meta:
         model = Department
