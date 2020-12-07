@@ -4,7 +4,17 @@ from apps.departmants.models import (
     Booking,
     PhoneNumber,
 )
-from apps.foods.serializers import FoodCategorySerializer
+from apps.foods.models import FoodCategory
+
+
+class DepartmentFoodSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField()
+    main_title = serializers.CharField(read_only=True)
+    title = serializers.CharField(read_only=True)
+
+    class Meta:
+        model = FoodCategory
+        fields = "__all__"
 
 
 class PhoneNumberSerializer(serializers.ModelSerializer):
@@ -20,7 +30,7 @@ class PhoneNumberSerializer(serializers.ModelSerializer):
 
 
 class DepartmentListSerializer(serializers.ModelSerializer):
-    food = FoodCategorySerializer(many=True, read_only=True)
+    food = DepartmentFoodSerializer(many=True, read_only=True)
     phone_number = PhoneNumberSerializer(many=True, required=False)
 
     class Meta:
@@ -30,7 +40,7 @@ class DepartmentListSerializer(serializers.ModelSerializer):
 
 class DepartmentSerializer(serializers.ModelSerializer):
     phone_number = PhoneNumberSerializer(many=True, required=False)
-    food = FoodCategorySerializer(many=True, read_only=True)
+    food = DepartmentFoodSerializer(many=True, required=False)
 
     class Meta:
         model = Department
@@ -38,13 +48,28 @@ class DepartmentSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         phone_numbers = validated_data.pop('phone_number')
+        foods = validated_data.pop('food')
         instance = Department.objects.create(**validated_data)
+        for food in foods:
+            try:
+                food_obj = FoodCategory.objects.get(id=food.get('id'))
+                instance.food.add(food_obj)
+            except FoodCategory.DoesNotExist as error:
+                raise serializers.ValidationError(error)
         for phone_number in phone_numbers:
             PhoneNumber.objects.create(department=instance, **phone_number)
         return instance
 
     def update(self, instance, validated_data):
         phone_numbers = validated_data.pop('phone_number', [])
+        foods = validated_data.pop('food', [])
+        for food in foods:
+            try:
+                food_obj = FoodCategory.objects.get(id=food.get('id'))
+                instance.food.clear()
+                instance.food.add(food_obj)
+            except FoodCategory.DoesNotExist as error:
+                raise serializers.ValidationError(error)
         for phone_number in phone_numbers:
             if phone_number.get('id') is None:
                 phone_obj = PhoneNumber.objects.create(department=instance, **phone_number)
