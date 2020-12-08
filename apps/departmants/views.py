@@ -16,7 +16,7 @@ from apps.departmants.serializers import (
 
 
 class DepartmentAPIViewSet(viewsets.ModelViewSet):
-    queryset = Department.objects.all()
+    queryset = Department.objects.prefetch_related('food', 'phone_number').all()
     serializer_class = DepartmentSerializer
 
     @action(detail=True, methods=['get'])
